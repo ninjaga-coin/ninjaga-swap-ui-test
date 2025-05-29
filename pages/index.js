@@ -30,7 +30,7 @@ export default function Home() {
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-center bg-black text-white px-4">
-      <h1 className="text-4xl font-bold mb-4 text-center">NINJAGA Swap UI</h1>
+      <h1 className="text-4xl font-bold mb-4 text-center">NINJAGA Swap UI - OLD</h1>
       <img src="/logo.png" alt="NINJAGA Logo" className="w-32 mb-6" />
       <WalletMultiButtonDynamic className="mb-4" />
 
@@ -43,7 +43,7 @@ export default function Home() {
             {/* Jupiter Swap Widget */}
             <div className="mt-6">
               <iframe
-                src="https://widget.jup.ag/?inputMint=So11111111111111111111111111111111111111112&outputMint=NJg5fisDp1rHTcLjzRG2fWd6PQGMBJCEV2hdJitgxmp"
+                src="https://widget.jup.ag/?inputMint=So11111111111111111111111111111111111111112&outputMint=8VhT6pBXAfutsKdbRXr9s1Z6waw6sVmzXK3t4x7ys6Ee"
                 title="Jupiter Swap"
                 width="100%"
                 height="500"
