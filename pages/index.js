@@ -22,9 +22,7 @@ export default function Home() {
   const { publicKey } = useWallet();
   const isWhitelisted =
     !WHITELIST_MODE || (publicKey && WHITELIST.includes(publicKey.toBase58()));
-  const isAdmin =
-    publicKey &&
-    publicKey.toBase58() === "BnNDWFeTg8Bx8xuEvtfuB2Eu9UamTBqYSmiPiUfnbXAm";
+  const isAdmin = publicKey && publicKey.toBase58() === "BnNDWFeTg8Bx8xuEvtfuB2Eu9UamTBqYSmiPiUfnbXAm";
 
   const [lastTrade, setLastTrade] = useState(null);
 
@@ -40,7 +38,7 @@ export default function Home() {
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-center bg-black text-white px-4">
-      <h1 className="text-4xl font-bold mb-4 text-center">NINJAGA Swap UI</h1>
+      <h1 className="text-4xl font-bold mb-4 text-center">NINJAGA Swap UI - Test</h1>
       <img src="/logo.png" alt="NINJAGA Logo" className="w-32 mb-6" />
       <WalletMultiButtonDynamic className="mb-4" />
       <p className="mb-4">
@@ -52,20 +50,14 @@ export default function Home() {
       </p>
 
       {isWhitelisted && (
-        <div className="w-full max-w-3xl mt-6">
-          <iframe
-            src="https://terminal.jup.ag/embed/solana/?inputMint=So11111111111111111111111111111111111111112&outputMint=DwSfpmu1ovgcMocdib4y1v7NXnyf4VDEVR81H8Ynpump&strict=true&displayMode=integrated"
-            title="Jupiter Swap"
-            width="100%"
-            height="520"
-            frameBorder="0"
-            style={{
-              borderRadius: "12px",
-              background: "#111",
-            }}
-            allow="clipboard-write"
-          ></iframe>
-        </div>
+        <a
+          href="https://terminal.jup.ag/swap/SOL-DwSfpmu1ovgcMocdib4y1v7NXnyf4VDEVR81H8Ynpump"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-6 rounded transition"
+        >
+          Launch NJG Swap on Jupiter
+        </a>
       )}
 
       {isAdmin && (
