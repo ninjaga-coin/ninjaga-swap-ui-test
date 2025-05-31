@@ -53,7 +53,7 @@ export default function Home() {
       {isWhitelisted && (
         <div className="mt-6 w-full max-w-2xl">
           <iframe
-            src="https://widget.jup.ag/?inputMint=So11111111111111111111111111111111111111112&outputMint=8VhT6pBXAfutsKdbRXr9s1Z6waw6sVmzXK3t4x7ys6Ee"
+            src="https://widget.jup.ag/?inputMint=So11111111111111111111111111111111111111112&outputMint=DwSfpmu1ovgcMocdib4y1v7NXnyf4VDEVR81H8Ynpump"
             title="Jupiter Swap"
             width="100%"
             height="500"
