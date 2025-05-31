@@ -1,7 +1,7 @@
 import dynamic from "next/dynamic";
 import { useWallet } from "@solana/wallet-adapter-react";
 import { useEffect, useState } from "react";
-
+fetch("/api/live-trade")
 const WalletMultiButtonDynamic = dynamic(
   () =>
     import("@solana/wallet-adapter-react-ui").then(
