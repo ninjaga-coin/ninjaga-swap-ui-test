@@ -1,8 +1,7 @@
-import { useEffect, useState } from "react";
-import { useWallet } from "@solana/wallet-adapter-react";
 import dynamic from "next/dynamic";
+import { useWallet } from "@solana/wallet-adapter-react";
+import { useEffect, useState } from "react";
 
-// Load wallet connect button dynamically (avoids hydration error)
 const WalletMultiButtonDynamic = dynamic(
   () =>
     import("@solana/wallet-adapter-react-ui").then(
@@ -11,58 +10,75 @@ const WalletMultiButtonDynamic = dynamic(
   { ssr: false }
 );
 
-const whitelist = [
+const WHITELIST_MODE = true;
+
+const WHITELIST = [
   "cnvyhSvBrGLMZYovuPQWiRF9tz86U2ZNgwFJTGUmuzb",
   "P78EbCN7gBdrUMvVaXUbkQLvZCAfSSw4L8r7NxqMd5V",
   "EDzvcPkb2vYXZ7vMqXHAYuNZBUksc1nU2PebXZJFSkpr",
-  "4dam2GksGbgW3zT3SdEtbqAjzUQH1SkQki5tzSQ7Z31b"
+  "BnNDWFeTg8Bx8xuEvtfuB2Eu9UamTBqYSmiPiUfnbXAm",
 ];
 
 export default function Home() {
   const { publicKey } = useWallet();
-  const [isWhitelisted, setIsWhitelisted] = useState(false);
+  const isWhitelisted =
+    !WHITELIST_MODE || (publicKey && WHITELIST.includes(publicKey.toBase58()));
+  const isAdmin = publicKey && publicKey.toBase58() === "BnNDWFeTg8Bx8xuEvtfuB2Eu9UamTBqYSmiPiUfnbXAm";
+
+  const [lastTrade, setLastTrade] = useState(null);
 
   useEffect(() => {
-    if (publicKey) {
-      setIsWhitelisted(whitelist.includes(publicKey.toBase58()));
-    }
-  }, [publicKey]);
+    if (!isAdmin) return;
+    const interval = setInterval(() => {
+      fetch("/api/mock-trade-data.json")
+        .then((res) => res.json())
+        .then((data) => setLastTrade(data));
+    }, 8000);
+    return () => clearInterval(interval);
+  }, [isAdmin]);
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-center bg-black text-white px-4">
       <h1 className="text-4xl font-bold mb-4 text-center">NINJAGA Swap UI - OLD</h1>
       <img src="/logo.png" alt="NINJAGA Logo" className="w-32 mb-6" />
       <WalletMultiButtonDynamic className="mb-4" />
+      <p className="mb-4">
+        {WHITELIST_MODE
+          ? isWhitelisted
+            ? "Access granted: whitelisted wallet"
+            : "Whitelist only — restricted access"
+          : "Public trading enabled"}
+      </p>
 
-      {publicKey ? (
-        isWhitelisted ? (
-          <div className="bg-green-900 p-4 rounded-lg w-full max-w-2xl text-center">
-            <p className="mb-2">✅ Wallet is whitelisted!</p>
-            <p>You may now swap NJG tokens at launch.</p>
+      {isWhitelisted && (
+        <div className="mt-6 w-full max-w-2xl">
+          <iframe
+            src="https://widget.jup.ag/?inputMint=So11111111111111111111111111111111111111112&outputMint=8VhT6pBXAfutsKdbRXr9s1Z6waw6sVmzXK3t4x7ys6Ee"
+            title="Jupiter Swap"
+            width="100%"
+            height="500"
+            frameBorder="0"
+            style={{ borderRadius: "12px", background: "#111" }}
+            />
+        </div>
+      )}
 
-            {/* Jupiter Swap Widget */}
-            <div className="mt-6">
-              <iframe
-                src="https://widget.jup.ag/?inputMint=So11111111111111111111111111111111111111112&outputMint=8VhT6pBXAfutsKdbRXr9s1Z6waw6sVmzXK3t4x7ys6Ee"
-                title="Jupiter Swap"
-                width="100%"
-                height="500"
-                frameBorder="0"
-                style={{
-                  borderRadius: "12px",
-                  background: "#111",
-                }}
-              />
-            </div>
-          </div>
-        ) : (
-          <div className="bg-red-900 p-4 rounded-lg text-center w-full max-w-md">
-            <p className="mb-2">🚫 This wallet is not on the whitelist.</p>
-            <p>Only pre-approved wallets can trade at launch.</p>
-          </div>
-        )
-      ) : (
-        <p className="text-center">🔌 Please connect your wallet above to check access.</p>
+      {isAdmin && (
+        <div className="mt-10 p-4 bg-gray-900 rounded-lg w-full max-w-2xl">
+          <h2 className="text-lg font-bold mb-2">🛡️ Real-Time Trade Monitor</h2>
+          {
+            lastTrade ? (
+              <div>
+                <p>💳 Wallet: {lastTrade.wallet}</p>
+                <p>💰 Amount: {lastTrade.amount} NJG</p>
+                <p>🔍 Type: {lastTrade.type}</p>
+                <p>⏰ Time: {lastTrade.timestamp}</p>
+              </div>
+            ) : (
+              <p>⏳ Waiting for trade data...</p>
+            )
+          }
+        </div>
       )}
     </div>
   );
