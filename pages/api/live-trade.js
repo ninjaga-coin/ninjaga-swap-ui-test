@@ -2,7 +2,7 @@ export default async function handler(req, res) {
   try {
     const response = await fetch("https://public-api.birdeye.so/public/last-trade?pairAddress=DwSfpmu1ovgcMocdib4y1v7NXnyf4VDEVR81H8Ynpump", {
       headers: {
-        "X-API-KEY": "demo" // Replace with your real API key later
+        "X-API-KEY": "demo" // Replace with your real API key
       }
     });
 
