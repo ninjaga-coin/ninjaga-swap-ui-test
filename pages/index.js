@@ -15,14 +15,16 @@ const WHITELIST_MODE = true;
 const WHITELIST = [
   "cnvyhSvBrGLMZYovuPQWiRF9tz86U2ZNgwFJTGUmuzb",
   "P78EbCN7gBdrUMvVaXUbkQLvZCAfSSw4L8r7NxqMd5V",
-  "EDzvcPkb2vYXZ7vMqXHAYuNZBUksc1nU2PebXZJFSkpr",
+  "EDzvcPkb2vYXZ7vMqXHAYuNZBUksc1nU2PebXZJFSkpr"
 ];
 
 export default function Home() {
   const { publicKey } = useWallet();
   const isWhitelisted =
     !WHITELIST_MODE || (publicKey && WHITELIST.includes(publicKey.toBase58()));
-  const isAdmin = publicKey && publicKey.toBase58() === "BnNDWFeTg8Bx8xuEvtfuB2Eu9UamTBqYSmiPiUfnbXAm";
+  const isAdmin =
+    publicKey &&
+    publicKey.toBase58() === "BnNDWFeTg8Bx8xuEvtfuB2Eu9UamTBqYSmiPiUfnbXAm";
 
   const [lastTrade, setLastTrade] = useState(null);
 
